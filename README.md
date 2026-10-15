@@ -35,6 +35,7 @@ src/rental/
   Truck.java            alamklass: veoauto (lisatasu kandevõime järgi)
   Customer.java         klient (kapseldatud ja valideeritud väljad)
   Rental.java           üks laenutus (sõiduk, klient, päevad, summa)
+  RentalService.java    põhiloogika: HashMap, HashSet ja ArrayList kollektsioonid
   Rentable.java         liides: laenutatav asi
   RentalException.java  oma erind äriloogika vigade jaoks
 ```
