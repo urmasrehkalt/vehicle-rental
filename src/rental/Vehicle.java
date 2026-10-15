@@ -114,6 +114,13 @@ public abstract class Vehicle implements Rentable {
         this.dailyRate = dailyRate;
     }
 
+    /** Ühine abimeetod alamklassidele: renti päevade arv peab olema vähemalt 1. */
+    protected static void requireDays(int days) {
+        if (days <= 0) {
+            throw new IllegalArgumentException("Päevade arv peab olema suurem kui 0.");
+        }
+    }
+
     /** Ühine abimeetod: tekst ei tohi olla null ega tühi. Tagastab kärbitud teksti. */
     protected static String requireText(String value, String fieldName) {
         if (value == null || value.isBlank()) {
