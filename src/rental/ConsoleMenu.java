@@ -12,18 +12,22 @@ public class ConsoleMenu {
     private final RentalService service;
     private final ConsoleInput input;
 
+    // Konstruktor saab teenuse ja sisendi väljastpoolt ("this.x = x": väli saab parameetri väärtuse)
     public ConsoleMenu(RentalService service, ConsoleInput input) {
         this.service = service;
         this.input = input;
     }
 
+    /** Menüü põhitsükkel: näitab menüüd ja täidab valitud tegevuse, kuni kasutaja valib 0. */
     public void run() {
-        boolean running = true;
-        try {
+        boolean running = true;   // tsükkel kestab, kuni see muutub false
+        try {                     // välimine try: sisendi lõpp (Ctrl+D)
             while (running) {
                 printMenu();
                 int choice = input.readInt("Vali tegevus: ");
-                try {
+                try {             // sisemine try: ühe tegevuse vead, tsükkel jätkab
+                    // switch valib meetodi numbri järgi; break lõpetab valitud juhu,
+                    // muidu jätkaks täitmine järgmisest case'ist
                     switch (choice) {
                         case 1: printVehicles(service.getAllVehicles()); break;
                         case 2: addVehicle(); break;

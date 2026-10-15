@@ -338,6 +338,9 @@ Iga stsenaarium: käivita programm ja tee sammud. Oodatud tulemus on sulgudes.
 
 ## Kaitsmise spikker: kus mis on
 
+Põhimõisted (klass, objekt, muutuja, konstruktor, `static` jne) ja ühe laenutuse
+samm-sammuline käik koodis on failis [SELGITUS.md](SELGITUS.md).
+
 **Pärilus:** `Car`, `Motorcycle` ja `Truck` pärivad klassist `Vehicle` (`extends`).
 Alamklass saab ülemklassilt id, margi, hinna jne ning lisab omad väljad
 (`seats`, `engineCc`, `loadCapacityKg`). Konstruktoris kutsub `super(...)` ülemklassi konstruktorit.

@@ -14,8 +14,8 @@ public class Car extends Vehicle {
     public Car(String id, String registrationNumber, String brand, String model,
                int year, double dailyRate, int seats, boolean luxury) {
         super(id, registrationNumber, brand, model, year, dailyRate); // ülemklassi konstruktor
-        setSeats(seats);
-        this.luxury = luxury;
+        setSeats(seats);          // setter kontrollib väärtust (2 kuni 9)
+        this.luxury = luxury;     // this.luxury on väli, luxury on parameeter
     }
 
     @Override

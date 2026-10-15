@@ -20,10 +20,12 @@ public class ConsoleInput {
         return scanner.nextLine().trim();
     }
 
+    /** Küsib täisarvu, kuni kasutaja sisestab sellise. */
     public int readInt(String prompt) {
-        while (true) {
+        while (true) {   // kordab, kuni return väljub meetodist
             String line = readText(prompt);
             try {
+                // parseInt viskab NumberFormatException, kui tekst pole täisarv ("abc", "3.5")
                 return Integer.parseInt(line);
             } catch (NumberFormatException e) {
                 System.out.println("Palun sisesta täisarv (näiteks 5).");
