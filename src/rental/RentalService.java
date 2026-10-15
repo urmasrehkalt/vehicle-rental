@@ -66,6 +66,13 @@ public class RentalService {
         Vehicle vehicle = getVehicle(vehicleId);
         Customer customer = getCustomer(customerId);
 
+        if (!customer.hasLicenseFor(vehicle)) {
+            throw new RentalException(String.format(
+                    "%s (kategooria %s) ei tohi laenutada sõidukit %s, vaja on kategooriat %s.",
+                    customer.getName(), customer.getLicenseCategory(),
+                    vehicle.getId(), vehicle.getRequiredLicense()));
+        }
+
         // Rental luuakse enne: kui päevade arv on vigane, viskab ta erindi
         // ja sõiduk jääb saadavaks.
         Rental rental = new Rental(vehicle, customer, days);

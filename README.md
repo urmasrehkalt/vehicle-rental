@@ -49,6 +49,13 @@ Näidisandmete ID-d: sõidukid `V1` kuni `V6`, kliendid `C1` kuni `C3`.
 | Mootorratas | päevahind × päevad, alates 7 päevast -15% |
 | Veoauto | (päevahind + 5 EUR iga kandevõime tonni kohta) × päevad |
 
+## Juhiloa reegel
+
+Sõidukit saab laenutada ainult klient, kelle juhiloa kategooria täpselt klapib:
+auto vajab kategooriat **B**, mootorratas **A**, veoauto **C**. Kategooriat küsib
+iga alamklass ise (`getRequiredLicense()`), kontrolli teeb `Customer.hasLicenseFor(...)`
+ja seda kasutab `RentalService.rentVehicle`.
+
 ## Projekti struktuur
 
 ```
@@ -85,7 +92,8 @@ Iga stsenaarium: käivita programm ja tee sammud. Oodatud tulemus on sulgudes.
 8. **Filter ja sort:** valik 8, 4, `50,5` (komaga sisend töötab), sorteeri hinna järgi.
 9. **Duplikaat:** lisa sõiduk id-ga `V1` või märgiga `123ABC` (viga: juba olemas).
 10. **Vale kategooria:** lisa klient kategooriaga `Z` (viga: peab olema A, B või C).
-11. **Sisendi lõpp:** sulge sisend Ctrl+D-ga (programm sulgub rahulikult, ei kuku kokku).
+11. **Vale juhiluba:** valik 5, `V6` (veoauto), `C1` (kategooria B), `1` (viga: vaja on kategooriat C, sõiduk jääb saadavaks). Sobiv paar: `V6` ja `C3`.
+12. **Sisendi lõpp:** sulge sisend Ctrl+D-ga (programm sulgub rahulikult, ei kuku kokku).
 
 ## Kaitsmise spikker: kus mis on
 

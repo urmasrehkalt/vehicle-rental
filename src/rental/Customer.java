@@ -46,6 +46,11 @@ public class Customer {
         this.licenseCategory = category;
     }
 
+    /** Kas kliendi juhiluba sobib antud sõiduki jaoks (kategooriad peavad täpselt klappima). */
+    public boolean hasLicenseFor(Vehicle vehicle) {
+        return licenseCategory.equals(vehicle.getRequiredLicense());
+    }
+
     @Override
     public String toString() {
         return String.format("[%s] %s (kategooria %s)", id, name, licenseCategory);

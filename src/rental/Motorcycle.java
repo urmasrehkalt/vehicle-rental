@@ -32,6 +32,11 @@ public class Motorcycle extends Vehicle {
         return "Mootorratas";
     }
 
+    @Override
+    public String getRequiredLicense() {
+        return "A";
+    }
+
     public int getEngineCc() {
         return engineCc;
     }

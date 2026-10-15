@@ -30,6 +30,11 @@ public class Car extends Vehicle {
         return "Auto";
     }
 
+    @Override
+    public String getRequiredLicense() {
+        return "B";
+    }
+
     public int getSeats() {
         return seats;
     }

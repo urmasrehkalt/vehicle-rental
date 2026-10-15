@@ -40,6 +40,9 @@ public abstract class Vehicle implements Rentable {
     /** Sõiduki tüübi nimi (nt "Auto"), kasutatakse filtreerimisel ja väljastamisel. */
     public abstract String getTypeName();
 
+    /** Juhiloa kategooria, mida selle sõiduki laenutamiseks vaja on (A, B või C). */
+    public abstract String getRequiredLicense();
+
     @Override
     public void rent() throws RentalException {
         if (!available) {
@@ -131,8 +134,8 @@ public abstract class Vehicle implements Rentable {
 
     @Override
     public String toString() {
-        return String.format("[%s] %s %s %s (%d), %s, %.2f EUR/päev, %s",
+        return String.format("[%s] %s %s %s (%d), %s, %.2f EUR/päev, juhiluba %s, %s",
                 id, getTypeName(), brand, model, year, registrationNumber, dailyRate,
-                available ? "saadaval" : "laenutatud");
+                getRequiredLicense(), available ? "saadaval" : "laenutatud");
     }
 }

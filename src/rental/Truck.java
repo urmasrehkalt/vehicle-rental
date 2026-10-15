@@ -29,6 +29,11 @@ public class Truck extends Vehicle {
         return "Veoauto";
     }
 
+    @Override
+    public String getRequiredLicense() {
+        return "C";
+    }
+
     public double getLoadCapacityKg() {
         return loadCapacityKg;
     }
