@@ -106,6 +106,74 @@ public class RentalService {
         return result;
     }
 
+    /**
+     * Otsib sõidukeid, mille mark või mudel sisaldab otsingutekstu (suur- ja väiketähti ei vahet).
+     * Tühi tulemus on tühi nimekiri, mitte viga.
+     */
+    public List<Vehicle> searchByText(String text) {
+        if (text == null || text.isBlank()) {
+            throw new IllegalArgumentException("Otsingutekst ei tohi olla tühi.");
+        }
+        String needle = text.trim().toLowerCase();
+        List<Vehicle> result = new ArrayList<>();
+        for (Vehicle vehicle : getAllVehicles()) {
+            if (vehicle.getBrand().toLowerCase().contains(needle)
+                    || vehicle.getModel().toLowerCase().contains(needle)) {
+                result.add(vehicle);
+            }
+        }
+        return result;
+    }
+
+    /** Filtreerib tüübi järgi, nt "Auto", "Mootorratas" või "Veoauto" (vt getTypeName). */
+    public List<Vehicle> filterByType(String typeName) {
+        List<Vehicle> result = new ArrayList<>();
+        for (Vehicle vehicle : getAllVehicles()) {
+            if (vehicle.getTypeName().equalsIgnoreCase(typeName)) {
+                result.add(vehicle);
+            }
+        }
+        return result;
+    }
+
+    public List<Vehicle> filterAvailable() {
+        List<Vehicle> result = new ArrayList<>();
+        for (Vehicle vehicle : getAllVehicles()) {
+            if (vehicle.isAvailable()) {
+                result.add(vehicle);
+            }
+        }
+        return result;
+    }
+
+    /** Sõidukid, mille päevahind on kuni antud summa (piir kaasa arvatud). */
+    public List<Vehicle> filterByMaxDailyRate(double maxRate) {
+        if (maxRate <= 0) {
+            throw new IllegalArgumentException("Maksimaalne hind peab olema suurem kui 0.");
+        }
+        List<Vehicle> result = new ArrayList<>();
+        for (Vehicle vehicle : getAllVehicles()) {
+            if (vehicle.getDailyRate() <= maxRate) {
+                result.add(vehicle);
+            }
+        }
+        return result;
+    }
+
+    /** Sorteerib päevahinna järgi odavamast kallimani. Algset nimekirja ei muudeta. */
+    public List<Vehicle> sortByDailyRate(List<Vehicle> list) {
+        List<Vehicle> sorted = new ArrayList<>(list);
+        sorted.sort(Comparator.comparingDouble(Vehicle::getDailyRate));
+        return sorted;
+    }
+
+    /** Sorteerib aasta järgi uuemast vanemani. Algset nimekirja ei muudeta. */
+    public List<Vehicle> sortByYearNewestFirst(List<Vehicle> list) {
+        List<Vehicle> sorted = new ArrayList<>(list);
+        sorted.sort(Comparator.comparingInt(Vehicle::getYear).reversed());
+        return sorted;
+    }
+
     public List<Customer> getAllCustomers() {
         List<Customer> result = new ArrayList<>(customers.values());
         result.sort(Comparator.comparing(Customer::getId));
