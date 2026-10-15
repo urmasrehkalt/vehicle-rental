@@ -14,17 +14,28 @@ näidisandmed (6 sõidukit, 3 klienti).
 1. [Kiirstart](#kiirstart)
 2. [JDK paigaldamine](#jdk-paigaldamine)
 3. [Käivitamine](#käivitamine)
-4. [Kasutamine](#kasutamine)
-5. [Reeglid](#reeglid)
-6. [Projekti struktuur](#projekti-struktuur)
-7. [Testimine](#testimine)
-8. [Tõrkeotsing](#tõrkeotsing)
-9. [Kaitsmise spikker](#kaitsmise-spikker-kus-mis-on)
-10. [Git](#git)
+4. [Fish shell](#fish-shell)
+5. [Kasutamine](#kasutamine)
+6. [Reeglid](#reeglid)
+7. [Projekti struktuur](#projekti-struktuur)
+8. [Testimine](#testimine)
+9. [Tõrkeotsing](#tõrkeotsing)
+10. [Kaitsmise spikker](#kaitsmise-spikker-kus-mis-on)
+11. [Git](#git)
 
 ## Kiirstart
 
 Kui JDK 17 või uuem on juba paigaldatud (kontroll: `java -version` ja `javac -version`):
+
+**fish:**
+
+```fish
+git clone https://github.com/urmasrehkalt/vehicle-rental.git
+cd vehicle-rental
+./run.fish
+```
+
+**bash / zsh:**
 
 ```bash
 git clone https://github.com/urmasrehkalt/vehicle-rental.git
@@ -32,8 +43,9 @@ cd vehicle-rental
 ./run.sh
 ```
 
-`run.sh` kompileerib kõik failid ja käivitab programmi. Kui JDK-d veel ei ole,
-alusta jaotisest [JDK paigaldamine](#jdk-paigaldamine).
+Skript kompileerib kõik failid ja käivitab programmi. Kui JDK-d veel ei ole,
+alusta jaotisest [JDK paigaldamine](#jdk-paigaldamine). Fishi kohta vt ka
+[Fish shell](#fish-shell).
 
 ## JDK paigaldamine
 
@@ -52,18 +64,22 @@ annab pärast paigaldust ikka veateate "Unable to locate a Java Runtime". Vali �
 
 **A) Lisa JDK oma terminali PATH-i** (püsivalt):
 
-```bash
-# zsh (macOS vaikeshell)
-echo 'export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"' >> ~/.zshrc
+fish:
 
-# fish
+```fish
 fish_add_path /opt/homebrew/opt/openjdk@21/bin
+```
+
+zsh (macOS vaikeshell):
+
+```bash
+echo 'export PATH="/opt/homebrew/opt/openjdk@21/bin:$PATH"' >> ~/.zshrc
 ```
 
 Ava terminal uuesti ja kontrolli: `java -version` peab näitama `openjdk version "21..."`.
 Intel Macil on asukoht `/usr/local/opt/openjdk@21/bin`.
 
-**B) Ära muuda midagi:** `./run.sh` leiab Homebrew JDK ise üles, ka siis, kui see pole PATH-is.
+**B) Ära muuda midagi:** `./run.fish` ja `./run.sh` leiavad Homebrew JDK ise üles, ka siis, kui see pole PATH-is.
 
 ### Windows
 
@@ -87,11 +103,16 @@ Kõik käsud tehakse **projekti juurkaustas** (seal, kus asub see README).
 
 ### 1. Skriptiga (macOS ja Linux, lihtsaim)
 
-```bash
-./run.sh
+```fish
+./run.fish      # fish
 ```
 
-Kui tuleb "Permission denied", anna skriptile käivitusõigus: `chmod +x run.sh`.
+```bash
+./run.sh        # bash / zsh
+```
+
+Mõlemad skriptid teevad sama: leiavad JDK, kompileerivad kausta `out/` ja käivitavad programmi.
+Kui tuleb "Permission denied", anna skriptile käivitusõigus: `chmod +x run.fish run.sh`.
 
 ### 2. Käsitsi (kõigil süsteemidel)
 
@@ -136,6 +157,28 @@ JAR on üks fail, mida saab kopeerida ükskõik kuhu ja käivitada käsuga `java
 1. Ava kaust `vehicle-rental` projektina (IntelliJ: *File > Open*).
 2. Märgi `src` lähtekoodi juurkaustaks (*Mark Directory as > Sources Root*), kui IDE ei tee seda ise.
 3. Ava `src/rental/Main.java` ja vajuta rohelist käivitusnuppu (*Run*) `main` meetodi kõrval.
+
+## Fish shell
+
+Kõik käsud selles README-s töötavad fishis (testitud fish 4.9-ga), välja arvatud
+Windowsi ja bashi/zshi näited. Fishi erinevused, mida võib vaja minna:
+
+| Tegevus | bash / zsh | fish |
+|---|---|---|
+| Skripti käivitamine | `./run.sh` | `./run.fish` (`./run.sh` töötab ka, sest skript käivitub bashiga) |
+| Muutuja ajutiselt PATH-i | `export PATH="/uus/tee:$PATH"` | `set -x PATH /uus/tee $PATH` |
+| JDK püsivalt PATH-i | rida faili `~/.zshrc` | `fish_add_path /opt/homebrew/opt/openjdk@21/bin` |
+| Käsud järjest, peatu vea korral | `javac ... && java ...` | `javac ... && java ...` (fish 3+) või `javac ...; and java ...` |
+
+Kontroll, et JDK on fishis nähtav:
+
+```fish
+java -version
+javac -version
+```
+
+Kui need annavad veateate (macOS: "Unable to locate a Java Runtime"), vt
+[macOS paigaldus](#macos-homebrew). `./run.fish` töötab ka siis.
 
 ## Kasutamine
 
@@ -225,7 +268,8 @@ ja seda kasutab `RentalService.rentVehicle`.
 
 ```
 vehicle-rental/
-  run.sh                kompileerib ja käivitab (macOS, Linux)
+  run.sh                kompileerib ja käivitab (bash / zsh, macOS ja Linux)
+  run.fish              sama fish shellile
   README.md             see dokument
   .gitignore            jätab välja out/, *.class, *.jar
   src/rental/
@@ -287,7 +331,8 @@ Iga stsenaarium: käivita programm ja tee sammud. Oodatud tulemus on sulgudes.
 | `UnsupportedClassVersionError` | Kompileerisid uuema JDK-ga kui käivitad. Kasuta mõlemaks sama JDK-d, kontrolli `java -version` ja `javac -version`. |
 | `error: file not found: src/rental/*.java` | Oled vales kaustas. `ls src/rental` peab näitama `.java` faile. |
 | Täpitähed näevad välja `Ã¶`, `?` | Terminali kodeering pole UTF-8. Windowsis `chcp 65001`, muus terminalis kontrolli UTF-8 seadet. Kompileerimisel kasuta alati `-encoding UTF-8`. |
-| `Permission denied: ./run.sh` | `chmod +x run.sh` |
+| `Permission denied: ./run.sh` või `./run.fish` | `chmod +x run.sh run.fish` |
+| fish: `Unknown command: java` | JDK pole fishi PATH-is. `fish_add_path /opt/homebrew/opt/openjdk@21/bin` või kasuta `./run.fish`. |
 | Programm kordab "Palun sisesta täisarv" | Menüüs ootab programm numbrit. Sisesta number, mitte tekst. |
 | Muudatused koodis ei avaldu | Kompileeri uuesti. `./run.sh` teeb seda iga kord. |
 
