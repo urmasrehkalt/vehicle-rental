@@ -33,6 +33,8 @@ src/rental/
   Car.java              alamklass: auto (luksusauto +30%)
   Motorcycle.java       alamklass: mootorratas (alates 7 päevast -15%)
   Truck.java            alamklass: veoauto (lisatasu kandevõime järgi)
+  Customer.java         klient (kapseldatud ja valideeritud väljad)
+  Rental.java           üks laenutus (sõiduk, klient, päevad, summa)
   Rentable.java         liides: laenutatav asi
   RentalException.java  oma erind äriloogika vigade jaoks
 ```
